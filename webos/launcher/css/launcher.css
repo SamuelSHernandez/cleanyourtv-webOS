@@ -1,0 +1,193 @@
+/* The launcher's look. Local only: no web fonts, no remote images. A fixed 1920x1080 canvas, the resolution
+   appinfo.json asks webOS for. Written for Chromium 38 (webOS 3.x): no custom properties, no grid, no gap, no
+   backdrop-filter (tests/js/static.test.js checks). Sizes that depend on `columns` are set inline by app.js. */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: #000000;
+  color: #f2f4f7;
+  font-family: "LG Smart UI", "Museo Sans", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ---- backdrop: sky, wallpaper, dim ---- */
+.backdrop, .backdrop > * {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+}
+.backdrop img { object-fit: cover; }
+.backdrop [hidden] { display: none; }
+
+#root {
+  position: relative;
+  height: 1080px;
+  padding: 48px 96px 0;
+  overflow: hidden;
+}
+
+/* ---- header ---- */
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.greeting { font-size: 26px; letter-spacing: 2px; text-transform: uppercase; color: #c9ced6; min-height: 32px; }
+.clockline { display: flex; align-items: baseline; }
+.clock { font-size: 64px; font-weight: 300; margin-right: 28px; }
+.date, .altdate { font-size: 26px; color: #9aa3ad; }
+.header-white .date, .header-white .altdate { color: #ffffff; }
+.date-below .clockline { display: block; }
+.date-below .date { display: block; }
+.altdate { margin-top: 4px; }
+
+.topbar { display: flex; align-items: center; }
+.pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  min-width: 64px;
+  margin-left: 18px;
+  padding: 0 28px;
+  border: 3px solid transparent;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.10);
+  color: #f2f4f7;
+  font: inherit;
+  font-size: 24px;
+  cursor: pointer;
+}
+.pill.round { width: 64px; padding: 0; }
+.pill img { width: 40px; height: 40px; border-radius: 20px; }
+.pill svg { width: 30px; height: 30px; }
+.pill.focused { border-color: #ffffff; background: rgba(255, 255, 255, 0.22); }
+
+.caption { position: absolute; right: 96px; top: 124px; font-size: 20px; color: #c9ced6; }
+
+/* ---- Home: the dock is the first row ---- */
+.dock-title { margin: 0 0 12px; height: 64px; font-size: 52px; font-weight: 400; white-space: nowrap; overflow: hidden; }
+.home { position: relative; }
+.row { display: flex; margin-bottom: 64px; }   /* room for the name under a focused tile */
+.band { padding: 18px; margin-left: -18px; margin-right: -18px; border-radius: 28px; background: rgba(23, 26, 31, 1); }
+.band.glass { background: rgba(255, 255, 255, 0.10); border: 1px solid rgba(255, 255, 255, 0.18); }
+.band.bare { background: transparent; border: 0; }
+
+.tile, .slot {
+  position: relative;
+  flex: none;
+  margin-right: 26px;
+  border-radius: 20px;
+}
+.tile {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: #1f242b;
+  color: #f2f4f7;
+  font: inherit;
+  cursor: pointer;
+  transition: transform 160ms ease-out, box-shadow 160ms ease-out;
+}
+.slot { border: 2px dashed rgba(255, 255, 255, 0.12); }
+.tile .art {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.tile .letter { position: absolute; left: 0; right: 0; top: 50%; margin-top: -40px; font-size: 64px; line-height: 80px; text-align: center; color: rgba(255, 255, 255, 0.85); }
+.tile .name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -38px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  font-size: 24px;
+  opacity: 0;
+}
+.names-always .tile .name { opacity: 0.55; }
+.tile.focused .name { opacity: 1; }
+.tile .card-caption { color: #c9ced6; }
+
+/* Focus highlight: glass_style. A dark gap inside the white ring keeps it visible on white tiles (Netflix,
+   YouTube), which a plain white ring is not (seen on a 50UQ7570PUJ). */
+.tile.focused { transform: scale(1.08); z-index: 2; }
+.glass-glass .tile.focused { box-shadow: 0 0 0 3px #000000, 0 0 0 7px #ffffff, 0 14px 40px rgba(0, 0, 0, 0.6), inset 0 18px 30px rgba(255, 255, 255, 0.14); }
+.glass-rim .tile.focused { box-shadow: 0 0 0 3px #000000, 0 0 0 7px #ffffff; }
+.glass-halo .tile.focused { box-shadow: 0 0 0 3px #000000, 0 0 0 7px #ffffff, 0 0 40px rgba(255, 255, 255, 0.45); }
+.tile.moving { box-shadow: 0 0 0 3px #000000, 0 0 0 7px #ffb35f, 0 0 30px rgba(255, 179, 95, 0.6); }
+
+/* Motion */
+.anim-overshoot .tile { transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); transition-duration: 220ms; }
+.anim-reduced .tile { transition-duration: 90ms; transition-timing-function: ease-out; }
+.anim-off .tile, .anim-off .pill { transition: none; }
+.anim-off .tile.focused { transform: none; }
+
+.library-pill { display: inline-flex; margin: 8px 0 60px; }
+
+.notice {
+  position: fixed;
+  left: 96px;
+  top: 190px;   /* under the clock, where it never covers a tile or its name */
+  max-width: 1500px;
+  margin: 0;
+  padding: 14px 22px;
+  border-radius: 12px;
+  background: rgba(23, 26, 31, 0.94);
+  color: #ffb35f;
+  font-size: 24px;
+}
+.notice.hint { color: #f2f4f7; }
+
+/* ---- panels: menus, Launcher settings, Inputs, App library ---- */
+.menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 600px;
+  height: 1080px;
+  padding: 72px 48px;
+  overflow: hidden;
+  background: rgba(23, 26, 31, 0.98);
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.5);
+}
+.menu-title { margin: 0 0 28px; font-size: 32px; font-weight: 400; }
+.menu-hint { margin: -12px 0 24px; font-size: 20px; color: #9aa3ad; }
+.item {
+  display: block;
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 16px 22px;
+  border: 3px solid transparent;
+  border-radius: 12px;
+  background: #1f242b;
+  color: #f2f4f7;
+  font: inherit;
+  font-size: 26px;
+  text-align: left;
+}
+.item .state { float: right; color: #9aa3ad; }
+.item.focused { border-color: #ffffff; }
+.menu[hidden], .notice[hidden], .screensaver[hidden], .caption[hidden] { display: none; }
+
+/* ---- clock screensaver ---- */
+.screensaver { position: fixed; left: 0; top: 0; width: 1920px; height: 1080px; background: #000000; }
+.screensaver .glow { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; opacity: 0.5; }
+.screensaver .ss-wallpaper { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
+.screensaver .ss-dim { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: #000000; }
+.screensaver .ss-time { position: absolute; font-size: 120px; font-weight: 200; color: rgba(255, 255, 255, 0.85); }
+.screensaver .ss-date { font-size: 32px; color: rgba(255, 255, 255, 0.6); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tile, .pill { transition: none; }
+}

@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "id": "webos-devmode-generic",
+  "description": "Any LG webOS TV with Developer Mode, no root. Eligibility only: no model is certified by this profile.",
+  "match": {
+    "sdk_major_min": 3,
+    "sdk_major_max": null
+  },
+  "browser_floor": "Chromium 38 (webOS 3.x): launcher source is ES5 syntax, checked by tests/js/static.test.js; no engine has run it yet",
+  "home_app_ids": [
+    "com.webos.app.home"
+  ],
+  "shortcut_candidates": {
+    "inputs": [
+      "com.webos.app.inputpicker",
+      "com.webos.app.inputmgr"
+    ],
+    "settings": [
+      "com.palm.app.settings"
+    ],
+    "livetv": [
+      "com.webos.app.livetv"
+    ]
+  },
+  "backends": {
+    "manual": {
+      "evidence": "experimental-hardware",
+      "requires": []
+    },
+    "external-watcher": {
+      "evidence": "automated-tests-only",
+      "requires": [
+        "ssap-paired",
+        "launcher-ready"
+      ]
+    }
+  },
+  "known_conflicts": [
+    {
+      "id": "com.local.nativehome",
+      "kind": "home-controller",
+      "what": "Razdva122 no-root Home helper (grabs the remote's input device)"
+    },
+    {
+      "id": "com.gathin.tvhome",
+      "kind": "launcher",
+      "what": "webOS launcher from OmkarK97/webos-vibehack or Razdva122/clean-your-tv-lg-webos"
+    },
+    {
+      "id": "com.cleanyourtv.manager",
+      "kind": "home-controller",
+      "what": "lasharor/cleanyourtv-WebOS manager (rooted Home takeover)"
+    },
+    {
+      "id": "com.cleanyourtv.picker",
+      "kind": "home-controller",
+      "what": "lasharor/cleanyourtv-WebOS input picker (rooted)"
+    },
+    {
+      "id": "com.cleanyourtv.root.preview.service",
+      "kind": "home-controller",
+      "what": "Razdva122 root edition service"
+    },
+    {
+      "id": "org.webosbrew.hbchannel",
+      "kind": "root",
+      "what": "Homebrew Channel: this TV has a homebrew or root setup"
+    }
+  ],
+  "evidence": [
+    {
+      "model": "50UQ7570PUJ",
+      "firmware": "04.60.91",
+      "sdk": "7.6.0",
+      "app_version": "0.1.0",
+      "backend": "manual",
+      "level": "experimental-hardware",
+      "date": "2026-10-26",
+      "checklist": "A1-A2 (check, install, every stage verified); launch, navigation and dock_only seen on the TV by the owner",
+      "notes": "webOS 22, Chrome/87.0.4280.88. Found and fixed on this TV: CSP 'self' blocks file:// scripts; --listfull prints only an [Info] line with no apps; foreground is empty for about a second after launch; white focus ring invisible on white tiles. SSAP accepted the unsigned six-permission manifest."
+    }
+  ]
+}

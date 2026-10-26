@@ -1,0 +1,4 @@
+#!/bin/sh
+# Run the webOS tools from anywhere: webos/cytv-webos <command> ...  (Python 3.9+, standard library only)
+here=$(cd "$(dirname "$0")" && pwd)
+PYTHONPATH="$here${PYTHONPATH:+:$PYTHONPATH}" exec python3 -m cytv_webos "$@"

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>CYTV Home preview</title>
+<link rel="stylesheet" href="../launcher/css/launcher.css">
+<link rel="stylesheet" href="preview.css">
+</head>
+<body>
+<!-- The same markup as launcher/index.html; tests/js/static.test.js keeps the two in step. theme.js is served by
+     `cytv-webos preview [--theme NAME]`; preview-adapter.js invents the apps. -->
+<div id="backdrop" class="backdrop" aria-hidden="true">
+  <div id="sky" hidden></div>
+  <img id="wallpaper" alt="" hidden>
+  <div id="wallpaper-dim" hidden></div>
+</div>
+<main id="root" aria-label="Home">
+  <header class="top">
+    <div id="when" class="when">
+      <div id="greeting" class="greeting"></div>
+      <div class="clockline"><span id="clock" class="clock"></span><span id="date" class="date"></span></div>
+      <div id="shamsi" class="altdate" hidden></div>
+      <div id="lunar" class="altdate" hidden></div>
+    </div>
+    <nav id="topbar" class="topbar" aria-label="TV"></nav>
+  </header>
+  <div id="caption" class="caption" hidden></div>
+  <div id="spacer"></div>
+  <h1 id="dock-title" class="dock-title"></h1>
+  <section id="home" class="home" aria-label="Apps"></section>
+  <p id="notice" class="notice" role="status" hidden></p>
+</main>
+<div id="menu" class="menu" role="dialog" aria-modal="true" hidden>
+  <h2 id="menu-title" class="menu-title"></h2>
+  <p id="menu-hint" class="menu-hint"></p>
+  <div id="menu-items" class="menu-items"></div>
+</div>
+<div id="screensaver" class="screensaver" hidden>
+  <img id="ss-wallpaper" class="ss-wallpaper" alt="" hidden>
+  <div id="ss-dim" class="ss-dim" hidden></div>
+  <div id="ss-glow" class="glow" hidden></div>
+  <div id="ss-time" class="ss-time"></div>
+</div>
+<pre id="preview-log" class="preview-log" aria-label="Simulated calls"></pre>
+<script src="../launcher/js/i18n.js"></script>
+<script src="../launcher/js/strings.js"></script>
+<script src="../launcher/js/config.js"></script>
+<script src="../launcher/js/nav.js"></script>
+<script src="../launcher/js/prefs.js"></script>
+<script src="../launcher/js/model.js"></script>
+<script src="../launcher/js/keys.js"></script>
+<script src="../launcher/js/refresh.js"></script>
+<script src="../launcher/js/clock.js"></script>
+<script src="../launcher/js/wallpaper.js"></script>
+<script src="../launcher/js/cards.js"></script>
+<script src="theme.js"></script>
+<script src="preview-adapter.js"></script>
+<script src="../launcher/js/app.js"></script>
+</body>
+</html>

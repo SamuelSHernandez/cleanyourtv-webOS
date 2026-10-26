@@ -1,0 +1,9 @@
+# Build output: IPKs are built from source, never committed.
+build/
+*.ipk
+# A TV's synced app list, journals and SSAP credentials live in ~/.cleanyourtv-webos, not here;
+# these catch copies made by hand.
+inventory.json
+ssap-credentials.json
+journal.json
+__pycache__/

@@ -1,0 +1,14 @@
+{
+  "dock_apps": [
+    "netflix",
+    "youtube.leanback.v4",
+    "amazon",
+    "com.disney.disneyplus-prod"
+  ],
+  "hidden_apps": [],
+  "columns": 4,
+  "rows_below_dock": 0,
+  "reduced_motion": false,
+  "background_color": "#000000",
+  "wallpaper": true
+}

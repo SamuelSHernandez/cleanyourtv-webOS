@@ -1,0 +1,8 @@
+/* Night Clock: black, dim, and moving a little every minute so nothing stays lit in one place. */
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000000; cursor: none; }
+.face { position: absolute; color: #8a8f99; font-family: "LG Smart UI", "Segoe UI", Roboto, Arial, sans-serif;
+  transition: left 2s ease-in-out, top 2s ease-in-out, opacity 2s ease-in-out; }
+.time { font-size: 220px; font-weight: 200; letter-spacing: 4px; line-height: 1; }
+.date { margin-top: 18px; font-size: 40px; color: #5c6169; }
+.late .face { color: #6b4d2e; }
+.late .date { color: #4a3826; }

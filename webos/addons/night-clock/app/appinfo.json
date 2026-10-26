@@ -1,0 +1,13 @@
+{
+  "id": "io.github.samuelshernandez.cytvwebos.nightclock",
+  "version": "0.1.0",
+  "vendor": "cleanyourtv-webOS contributors",
+  "type": "web",
+  "main": "index.html",
+  "title": "Night Clock",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png",
+  "bgColor": "#000000",
+  "resolution": "1920x1080",
+  "disableBackHistoryAPI": true
+}

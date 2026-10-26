@@ -1,0 +1,10 @@
+{
+  "background_color": "#05060a",
+  "sky_intensity": 70,
+  "glass_style": "rim",
+  "reduced_motion": true,
+  "home_idle_clock_minutes": 10,
+  "clock_glow": true,
+  "header_white": false,
+  "dock_opacity": 60
+}

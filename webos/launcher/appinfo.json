@@ -1,0 +1,14 @@
+{
+  "id": "io.github.samuelshernandez.cytvwebos",
+  "version": "0.1.0",
+  "vendor": "cleanyourtv-webOS contributors",
+  "type": "web",
+  "main": "index.html",
+  "title": "CYTV Home",
+  "icon": "icon.png",
+  "largeIcon": "largeIcon.png",
+  "bgColor": "#0d0f12",
+  "resolution": "1920x1080",
+  "disableBackHistoryAPI": true,
+  "requiredACG": ["application.launcher"]
+}
