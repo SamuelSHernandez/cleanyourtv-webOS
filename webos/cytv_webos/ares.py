@@ -15,6 +15,17 @@ from .store import DEVICE_RE
 
 APP_ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._+-]{0,127}")
 TOOLS = ("ares-install", "ares-launch", "ares-device")
+
+
+def executable(name, which=shutil.which):
+    """The program to start for `name`. On Windows npm installs the ares-* tools as .cmd shims, which
+    CreateProcess starts only by their full path; anything else keeps its bare name."""
+    found = which(name)
+    if isinstance(found, str) and found.lower().endswith((".cmd", ".bat")):
+        return found
+    return name
+
+
 # Answers that mean the computer never got a session with the TV, so nothing was sent.
 AUTH_HINTS = ("authentication", "passphrase", "privatekey", "private key", "permission denied (publickey")
 NET_HINTS = ("econnrefused", "etimedout", "ehostunreach", "enetunreach", "econnreset", "timed out",
@@ -120,7 +131,8 @@ class AresTransport:
             raise Refused(f"{argv[0]} is not installed. Install LG's webOS CLI: npm install -g @webos-tools/cli "
                           "(see webos/README.md for the version this was tested with)")
         try:
-            proc = self._run_proc(argv, capture_output=True, text=True, timeout=timeout)
+            proc = self._run_proc([executable(argv[0], self._which)] + argv[1:], capture_output=True, text=True,
+                                  timeout=timeout)
         except subprocess.TimeoutExpired:
             if mutation:
                 raise LinkLost(f"{argv[0]} did not finish within {timeout}s; the outcome on the TV is unknown")

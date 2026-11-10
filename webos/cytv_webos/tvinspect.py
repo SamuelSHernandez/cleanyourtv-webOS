@@ -17,6 +17,7 @@ import threading
 import time
 import urllib.request
 
+from .ares import executable
 from .errors import Refused, TransportError
 from .websocket import WebSocket
 
@@ -31,7 +32,7 @@ PORT_RE = re.compile(r"localhost:(\d{2,5})|127\.0\.0\.1:(\d{2,5})|:(\d{2,5})/dev
 
 def capture(device, app_id, popen=subprocess.Popen, timeout=40.0):
     """(state dict, png bytes) from the running app. The tunnel is always closed before returning."""
-    proc = popen(["ares-inspect", "--device", device, "--app", app_id], stdout=subprocess.PIPE,
+    proc = popen([executable("ares-inspect"), "--device", device, "--app", app_id], stdout=subprocess.PIPE,
                  stderr=subprocess.STDOUT, text=True)
     try:
         port = _port(proc, time.monotonic() + timeout)

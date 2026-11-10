@@ -4,7 +4,7 @@ import unittest
 
 import faketv  # noqa: F401  (puts webos/ on sys.path)
 
-from cytv_webos.ares import AresTransport, PairingError
+from cytv_webos.ares import AresTransport, PairingError, executable
 from cytv_webos.errors import LinkLost, Refused, TransportError
 
 
@@ -86,6 +86,15 @@ class AresTest(unittest.TestCase):
         r = Runner()
         transport(r).remove("youtube.leanback.v4")
         self.assertEqual(r.argv[0], ["ares-install", "--device", "tv", "--remove", "youtube.leanback.v4"])
+
+    def test_windows_cmd_shims_are_started_by_their_full_path(self):
+        # npm on Windows installs ares-install.cmd; CreateProcess cannot start the bare name (WinError 2).
+        shim = "C:\\npm\\ares-install.CMD"
+        r = Runner()
+        AresTransport("tv", runner=r, which=lambda t: shim).remove("netflix")
+        self.assertEqual(r.argv[0], [shim, "--device", "tv", "--remove", "netflix"])
+        self.assertEqual(executable("ares-inspect", lambda t: "/usr/bin/ares-inspect"), "ares-inspect")
+        self.assertEqual(executable("ares-inspect", lambda t: None), "ares-inspect")
 
 
 if __name__ == "__main__":
